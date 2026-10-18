@@ -1,29 +1,28 @@
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>הדגמה חיה: איכון משדר בחדר סגור</title>
+<title>Live demo: indoor transmitter localization</title>
 <style>
   :root { --bg:#f7f7f5; --card:#fff; --ink:#1f1f1d; --muted:#5f5e5a; --line:#dcdad3; --ok:#1D9E75; --warn:#BA7517; --bad:#A32D2D; --accent:#185FA5; }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-         line-height:1.65; font-size:16px; }
+         line-height:1.6; font-size:16px; }
   main { max-width:820px; margin:0 auto; padding:24px 16px 48px; }
   h1 { font-size:24px; margin:8px 0 4px; }
   .sub { color:var(--muted); margin:0 0 20px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin:0 0 16px; }
   h2 { font-size:18px; margin:0 0 8px; }
-  ol, ul { margin:6px 0; padding-inline-start:22px; }
+  ol, ul { margin:6px 0; padding-left:22px; }
   li { margin:4px 0; }
-  .en { direction:ltr; unicode-bidi:isolate; font-family: ui-monospace, Consolas, monospace; font-size:14px;
-        background:#efede7; border-radius:5px; padding:0 5px; }
+  .ui { font-family: ui-monospace, Consolas, monospace; font-size:14px; background:#efede7; border-radius:5px; padding:0 5px; }
   #status { text-align:center; }
   #msg { font-size:18px; margin:6px 0 12px; }
-  #msg.ok { color:var(--ok); } #msg.busy { color:var(--warn); } #msg.down { color:var(--bad); }
+  #msg.ok { color:var(--ok); } #msg.busy { color:var(--warn); } #msg.down, #msg.blocked { color:var(--bad); }
   .btn { display:inline-block; font:inherit; font-size:17px; padding:10px 22px; border-radius:9px; border:1px solid var(--accent);
-         background:var(--accent); color:#fff; text-decoration:none; cursor:pointer; }
+         background:var(--accent); color:#fff; text-decoration:none; cursor:pointer; margin:2px; }
   .btn.secondary { background:var(--card); color:var(--accent); }
   .note { color:var(--muted); font-size:14px; }
   .key { display:inline-block; border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:0 6px;
@@ -32,73 +31,79 @@
 </head>
 <body>
 <main>
-  <h1>הדגמה חיה: איכון משדר בחדר סגור בעזרת סיונה ורשת נוירונים</h1>
-  <p class="sub">פרויקט מחקר בהנחיית פרופ' חיים פרמוטר</p>
+  <h1>Live demo: indoor transmitter localization with Sionna ray tracing and a neural network</h1>
+  <p class="sub">A research project by Dvir Dahan, supervised by Prof. Haim Permuter</p>
 
   <div class="card" id="status">
-    <div id="msg">בודק אם האתר זמין...</div>
+    <div id="msg">Checking whether the demo is available...</div>
     <div id="action"></div>
     <div class="note" id="checked"></div>
   </div>
 
   <div class="card">
-    <h2>מה האתר מראה</h2>
-    <p>חדר בטון של 10 על 8 על 3 מטר, ובמרכזו עמוד. על אחד הקירות יש תחנת בסיס עם מערך של 8 אנטנות. מציירים מסלול של טלפון בתוך החדר,
-      בגבהים שונים, והמערכת מנסה לגלות איפה הטלפון נמצא, רק לפי האות שהגיע לתחנה.</p>
-    <p>כל נקודה במסלול (נקודה כל 5 ס"מ) עוברת בזמן אמת סימולציה פיזיקלית של מעקב קרניים בסיונה: איך האות מתפשט, מוחזר מהקירות ומהעמוד,
-      ומגיע לאנטנות. את האות שהתקבל מקבלת רשת נוירונים מאומנת, שמעריכה את מיקום הטלפון. גובה הטלפון ידוע לרשת, והיא מעריכה את המיקום
-      על הרצפה. בבדיקה על 30 אלף מיקומים שהרשת לא ראתה באימון, השגיאה הממוצעת היא 5.6 ס"מ.</p>
-    <p>בסוף רואים את המסלול האמיתי ואת המסלול שהרשת העריכה, בשני חדרים זה לצד זה: גולמי ומוחלק. מתחת לכל חדר מוצג אחוז החפיפה בין המסלולים.</p>
+    <h2>What the demo shows</h2>
+    <p>A closed concrete room of 10 x 8 x 3 m with a pole in the middle. One base station with an array of 8 antennas is
+      mounted on a wall. You draw the path of a phone inside the room, at varying heights, and the system finds where the
+      phone is, using only the signal received at the base station.</p>
+    <p>Every point of the path (one every 5 cm) is ray traced live with Sionna: the signal propagates, reflects off the
+      walls, floor, ceiling and pole, and reaches the antennas. A trained neural network then estimates the position of the
+      phone from the received signal. The phone height is known to the network; it estimates the position on the floor
+      plane. On 30,000 test positions never seen in training, the mean error is 5.6 cm.</p>
+    <p>At the end you see the true path and the estimated one in two rooms side by side, raw and smoothed, with the overlap
+      between them.</p>
   </div>
 
   <div class="card">
-    <h2>הוראות שימוש</h2>
-    <p class="note">האתר עצמו באנגלית. מומלץ להשתמש במחשב עם עכבר (לא בטלפון).</p>
+    <h2>How to use it</h2>
+    <p class="note">Best on a computer with a mouse (not on a phone).</p>
     <ol>
-      <li><b>בוחרים מצב ציור</b> בכפתורים למעלה:
+      <li><b>Choose a mode</b> with the buttons at the top:
         <ul>
-          <li><span class="en">Half circle</span>: לוחצים על נקודת התחלה ומאשרים (<span class="en">Confirm</span>), ואז על נקודת סיום ומאשרים.
-            נוצר חצי עיגול ביניהן, והגובה עולה ויורד לאורכו.</li>
-          <li><span class="en">Free drawing</span>: לוחצים על הכפתור השמאלי של העכבר ומציירים. שחרור העכבר מסיים את המסלול.</li>
+          <li><span class="ui">Half circle (two points)</span>: click a start point and confirm (<span class="ui">Confirm</span>),
+            then an end point and confirm. A half circle is drawn between them, with the height rising and falling along it.</li>
+          <li><span class="ui">Free drawing</span>: hold the left mouse button and draw. Releasing the button ends the path.</li>
+          <li><span class="ui">Single point + ray tracing</span>: click one point and confirm. The rays from that point are
+            drawn in the room, on their way to the base station (brighter and thicker = stronger), together with the position
+            estimated by the network and the error for that point.</li>
         </ul></li>
-      <li><b>משנים את גובה הציור</b> עם <b>גלגלת העכבר</b> (גם תוך כדי ציור), עם <b>החיצים</b> <span class="key">&uarr;</span>
-        <span class="key">&darr;</span> במקלדת, או עם הסרגל <span class="en">Drawing height</span>. המישור הכחול השקוף מראה את הגובה הנוכחי,
-        והכיסא בפינה עוזר להעריך גבהים (מושב בגובה 45 ס"מ).</li>
-      <li><b>מסובבים את החדר</b> בגרירה עם הכפתור הימני של העכבר, ו<b>מתקרבים</b> בגרירה עם הכפתור האמצעי.</li>
-      <li>לוחצים <span class="en">Confirm and localize</span>. המסלול המשוערך מצטייר נקודה אחר נקודה בשני חדרים: גולמי ומוחלק.
-        הסרגל מעל החדרים קובע מה נחשב "חפיפה": מרחק של 1 עד 5 ס"מ בין המסלולים.</li>
-      <li>לציור חדש: <span class="en">Redraw</span>.</li>
+      <li><b>Change the drawing height</b> with the <b>mouse wheel</b> (also while drawing), the <b>arrow keys</b>
+        <span class="key">&uarr;</span> <span class="key">&darr;</span>, or the <span class="ui">Drawing height</span> slider.
+        The transparent blue plane shows the current height; the chair in the corner helps to judge heights (seat at 45 cm).</li>
+      <li><b>Rotate the room</b> by dragging with the right mouse button, and <b>zoom</b> by dragging with the middle button.</li>
+      <li>Click <span class="ui">Confirm and localize</span>. The estimated path is drawn point by point in two rooms: raw and
+        smoothed. The slider above the rooms sets what counts as overlap: 1 to 5 cm between the paths.</li>
+      <li>To start again: <span class="ui">Redraw</span>.</li>
     </ol>
-    <p class="note">משתמש אחד בכל פעם. אחרי 10 דקות בלי פעילות, האתר מתפנה למשתמש הבא.</p>
+    <p class="note">One visitor at a time. After 10 minutes without activity, or a minute with the page in the background, the
+      demo is freed for the next visitor.</p>
   </div>
 </main>
 <script>
 const msg = document.getElementById("msg"), action = document.getElementById("action"), checked = document.getElementById("checked");
+function button(text, href, secondary) {
+  const a = document.createElement(href ? "a" : "button");
+  a.className = "btn" + (secondary ? " secondary" : "");
+  a.textContent = text;
+  if (href) a.href = href; else a.onclick = check;
+  action.appendChild(a);
+}
 function show(kind, url) {
   msg.className = kind;
   action.innerHTML = "";
   if (kind === "ok") {
-    msg.textContent = "האתר זמין.";
-    const a = document.createElement("a");
-    a.className = "btn"; a.href = url; a.textContent = "כניסה להדגמה";
-    action.appendChild(a);
+    msg.textContent = "The demo is available.";
+    button("Enter the demo", url);
   } else if (kind === "busy") {
-    msg.textContent = "מספר המשתמשים באתר הגיע למקסימום, אנא נסו שוב מאוחר יותר.";
+    msg.textContent = "The maximum number of users has been reached. Please try again later.";
   } else if (kind === "blocked") {
-    msg.textContent = "המחשב של האתר פועל, אבל הדפדפן שלכם לא מצליח להתחבר אליו. ייתכן שהרשת (למשל רשת ארגונית) " +
-      "או תוכנת אבטחה חוסמת את הכתובת. אפשר לנסות את הכניסה הישירה, או להיכנס מרשת אחרת, למשל מהטלפון בלי Wi-Fi.";
-    const a = document.createElement("a");
-    a.className = "btn"; a.href = url; a.textContent = "כניסה ישירה";
-    action.appendChild(a); action.appendChild(document.createTextNode(" "));
+    msg.textContent = "The demo is running, but your browser cannot connect to it. Your network or security software may be " +
+      "blocking the address. Try the direct link, or another network (for example a phone without Wi-Fi).";
+    button("Direct link", url);
   } else {
-    msg.textContent = "המחשב שאחראי על האתר כבוי כרגע. נסו שוב בעוד מספר שעות, או פנו לפרופ' חיים פרמוטר.";
+    msg.textContent = "The demo is not available at the moment. Please try again later.";
   }
-  if (kind !== "ok") {
-    const b = document.createElement("button");
-    b.className = "btn secondary"; b.textContent = "בדיקה חוזרת"; b.onclick = check;
-    action.appendChild(b);
-  }
-  checked.textContent = "נבדק בשעה " + new Date().toLocaleTimeString("he-IL") + " (בדיקה אוטומטית כל 20 שניות)";
+  if (kind !== "ok") button("Check again", null, true);
+  checked.textContent = "Checked at " + new Date().toLocaleTimeString() + " (checked again automatically every 20 seconds)";
 }
 async function withTimeout(url, ms) {
   const c = new AbortController(), t = setTimeout(() => c.abort(), ms);

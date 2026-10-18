@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>הדגמה חיה: איכון משדר בחדר סגור</title>
+<style>
+  :root { --bg:#f7f7f5; --card:#fff; --ink:#1f1f1d; --muted:#5f5e5a; --line:#dcdad3; --ok:#1D9E75; --warn:#BA7517; --bad:#A32D2D; --accent:#185FA5; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+         line-height:1.65; font-size:16px; }
+  main { max-width:820px; margin:0 auto; padding:24px 16px 48px; }
+  h1 { font-size:24px; margin:8px 0 4px; }
+  .sub { color:var(--muted); margin:0 0 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin:0 0 16px; }
+  h2 { font-size:18px; margin:0 0 8px; }
+  ol, ul { margin:6px 0; padding-inline-start:22px; }
+  li { margin:4px 0; }
+  .en { direction:ltr; unicode-bidi:isolate; font-family: ui-monospace, Consolas, monospace; font-size:14px;
+        background:#efede7; border-radius:5px; padding:0 5px; }
+  #status { text-align:center; }
+  #msg { font-size:18px; margin:6px 0 12px; }
+  #msg.ok { color:var(--ok); } #msg.busy { color:var(--warn); } #msg.down { color:var(--bad); }
+  .btn { display:inline-block; font:inherit; font-size:17px; padding:10px 22px; border-radius:9px; border:1px solid var(--accent);
+         background:var(--accent); color:#fff; text-decoration:none; cursor:pointer; }
+  .btn.secondary { background:var(--card); color:var(--accent); }
+  .note { color:var(--muted); font-size:14px; }
+  .key { display:inline-block; border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:0 6px;
+         font-size:14px; background:#fff; }
+</style>
+</head>
+<body>
+<main>
+  <h1>הדגמה חיה: איכון משדר בחדר סגור בעזרת סיונה ורשת נוירונים</h1>
+  <p class="sub">פרויקט מחקר בהנחיית פרופ' חיים פרמוטר</p>
+
+  <div class="card" id="status">
+    <div id="msg">בודק אם האתר זמין...</div>
+    <div id="action"></div>
+    <div class="note" id="checked"></div>
+  </div>
+
+  <div class="card">
+    <h2>מה האתר מראה</h2>
+    <p>חדר בטון של 10 על 8 על 3 מטר, ובמרכזו עמוד. על אחד הקירות יש תחנת בסיס עם מערך של 8 אנטנות. מציירים מסלול של טלפון בתוך החדר,
+      בגבהים שונים, והמערכת מנסה לגלות איפה הטלפון נמצא, רק לפי האות שהגיע לתחנה.</p>
+    <p>כל נקודה במסלול (נקודה כל 5 ס"מ) עוברת בזמן אמת סימולציה פיזיקלית של מעקב קרניים בסיונה: איך האות מתפשט, מוחזר מהקירות ומהעמוד,
+      ומגיע לאנטנות. את האות שהתקבל מקבלת רשת נוירונים מאומנת, שמעריכה את מיקום הטלפון. גובה הטלפון ידוע לרשת, והיא מעריכה את המיקום
+      על הרצפה. בבדיקה על 30 אלף מיקומים שהרשת לא ראתה באימון, השגיאה הממוצעת היא 5.6 ס"מ.</p>
+    <p>בסוף רואים את המסלול האמיתי ואת המסלול שהרשת העריכה, בשני חדרים זה לצד זה: גולמי ומוחלק. מתחת לכל חדר מוצג אחוז החפיפה בין המסלולים.</p>
+  </div>
+
+  <div class="card">
+    <h2>הוראות שימוש</h2>
+    <p class="note">האתר עצמו באנגלית. מומלץ להשתמש במחשב עם עכבר (לא בטלפון).</p>
+    <ol>
+      <li><b>בוחרים מצב ציור</b> בכפתורים למעלה:
+        <ul>
+          <li><span class="en">Half circle</span>: לוחצים על נקודת התחלה ומאשרים (<span class="en">Confirm</span>), ואז על נקודת סיום ומאשרים.
+            נוצר חצי עיגול ביניהן, והגובה עולה ויורד לאורכו.</li>
+          <li><span class="en">Free drawing</span>: לוחצים על הכפתור השמאלי של העכבר ומציירים. שחרור העכבר מסיים את המסלול.</li>
+        </ul></li>
+      <li><b>משנים את גובה הציור</b> עם <b>גלגלת העכבר</b> (גם תוך כדי ציור), עם <b>החיצים</b> <span class="key">&uarr;</span>
+        <span class="key">&darr;</span> במקלדת, או עם הסרגל <span class="en">Drawing height</span>. המישור הכחול השקוף מראה את הגובה הנוכחי,
+        והכיסא בפינה עוזר להעריך גבהים (מושב בגובה 45 ס"מ).</li>
+      <li><b>מסובבים את החדר</b> בגרירה עם הכפתור הימני של העכבר, ו<b>מתקרבים</b> בגרירה עם הכפתור האמצעי.</li>
+      <li>לוחצים <span class="en">Confirm and localize</span>. המסלול המשוערך מצטייר נקודה אחר נקודה בשני חדרים: גולמי ומוחלק.
+        הסרגל מעל החדרים קובע מה נחשב "חפיפה": מרחק של 1 עד 5 ס"מ בין המסלולים.</li>
+      <li>לציור חדש: <span class="en">Redraw</span>.</li>
+    </ol>
+    <p class="note">משתמש אחד בכל פעם. אחרי 10 דקות בלי פעילות, האתר מתפנה למשתמש הבא.</p>
+  </div>
+</main>
+<script>
+const msg = document.getElementById("msg"), action = document.getElementById("action"), checked = document.getElementById("checked");
+function show(kind, url) {
+  msg.className = kind;
+  action.innerHTML = "";
+  if (kind === "ok") {
+    msg.textContent = "האתר זמין.";
+    const a = document.createElement("a");
+    a.className = "btn"; a.href = url; a.textContent = "כניסה להדגמה";
+    action.appendChild(a);
+  } else if (kind === "busy") {
+    msg.textContent = "מספר המשתמשים באתר הגיע למקסימום, אנא נסו שוב מאוחר יותר.";
+  } else {
+    msg.textContent = "המחשב שאחראי על האתר כבוי כרגע. נסו שוב בעוד מספר שעות, או פנו לפרופ' חיים פרמוטר.";
+  }
+  if (kind !== "ok") {
+    const b = document.createElement("button");
+    b.className = "btn secondary"; b.textContent = "בדיקה חוזרת"; b.onclick = check;
+    action.appendChild(b);
+  }
+  checked.textContent = "נבדק בשעה " + new Date().toLocaleTimeString("he-IL") + " (בדיקה אוטומטית כל 20 שניות)";
+}
+async function withTimeout(url, ms) {
+  const c = new AbortController(), t = setTimeout(() => c.abort(), ms);
+  try { return await fetch(url, { signal: c.signal, cache: "no-store" }); } finally { clearTimeout(t); }
+}
+async function check() {
+  let url;
+  try {
+    const cfg = await (await withTimeout("config.json?t=" + Date.now(), 8000)).json();
+    url = (cfg.url || "").replace(/\/+$/, "");
+    if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(url)) throw new Error("no address");
+    const s = await (await withTimeout(url + "/api/status?t=" + Date.now(), 8000)).json();
+    show(s.busy ? "busy" : "ok", url + "/");
+  } catch (e) {
+    show("down");
+  }
+}
+check();
+setInterval(check, 20000);
+</script>
+</body>
+</html>

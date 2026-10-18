@@ -84,6 +84,12 @@ function show(kind, url) {
     action.appendChild(a);
   } else if (kind === "busy") {
     msg.textContent = "מספר המשתמשים באתר הגיע למקסימום, אנא נסו שוב מאוחר יותר.";
+  } else if (kind === "blocked") {
+    msg.textContent = "המחשב של האתר פועל, אבל הדפדפן שלכם לא מצליח להתחבר אליו. ייתכן שהרשת (למשל רשת ארגונית) " +
+      "או תוכנת אבטחה חוסמת את הכתובת. אפשר לנסות את הכניסה הישירה, או להיכנס מרשת אחרת, למשל מהטלפון בלי Wi-Fi.";
+    const a = document.createElement("a");
+    a.className = "btn"; a.href = url; a.textContent = "כניסה ישירה";
+    action.appendChild(a); action.appendChild(document.createTextNode(" "));
   } else {
     msg.textContent = "המחשב שאחראי על האתר כבוי כרגע. נסו שוב בעוד מספר שעות, או פנו לפרופ' חיים פרמוטר.";
   }
@@ -98,17 +104,26 @@ async function withTimeout(url, ms) {
   const c = new AbortController(), t = setTimeout(() => c.abort(), ms);
   try { return await fetch(url, { signal: c.signal, cache: "no-store" }); } finally { clearTimeout(t); }
 }
-async function check() {
-  let url;
-  try {
-    const cfg = await (await withTimeout("config.json?t=" + Date.now(), 8000)).json();
-    url = (cfg.url || "").replace(/\/+$/, "");
-    if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(url)) throw new Error("no address");
-    const s = await (await withTimeout(url + "/api/status?t=" + Date.now(), 8000)).json();
-    show(s.busy ? "busy" : "ok", url + "/");
-  } catch (e) {
-    show("down");
+async function status(url) {                               // two attempts, patient with slow networks
+  for (let i = 0; i < 2; i++) {
+    try { return await (await withTimeout(url + "/api/status?t=" + Date.now(), 15000)).json(); }
+    catch (e) { /* try once more */ }
   }
+  return null;
+}
+async function check() {
+  let cfg = null, url = "";
+  try {
+    cfg = await (await withTimeout("config.json?t=" + Date.now(), 10000)).json();
+    url = (cfg.url || "").replace(/\/+$/, "");
+  } catch (e) { /* no address */ }
+  if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(url)) { show("down"); return; }
+  const s = await status(url);
+  if (s) { show(s.busy ? "busy" : "ok", url + "/"); return; }
+  // Not reachable from here. The computer refreshes "alive" in config.json every 30 minutes: if that is recent,
+  // the computer is on and this visitor's network (or security software) blocks the address.
+  const alive = Date.parse(cfg.alive || cfg.updated || "");
+  show(Date.now() - alive < 45 * 60 * 1000 ? "blocked" : "down", url + "/");
 }
 check();
 setInterval(check, 20000);
